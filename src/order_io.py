@@ -17,7 +17,10 @@ def load_order(path):
             items.append((name, parse_price(price)))
     return items
 
-def write_receipt(path, items, discount_percent=0, tax_rate=0.07):
+def write_receipt(path, items, discount_percent=0, tax_rate=0.07, tax_rates=None):
+    # Accept both `tax_rate` and `tax_rates` (tests use `tax_rates` keyword)
+    if tax_rates is not None:
+        tax_rate = tax_rates
     prices = [price for (_name, price) in items]
     total = bulk_total(prices, discount_percent, tax_rate)
     lines = [f"{name}: {format_currency(price)}" for (name, price) in items]
